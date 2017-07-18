@@ -34,12 +34,12 @@ pipeline {
 	}
         stage('Compile') {
             steps {
-                sh "mvn clean install -Dmaven.repo.local=.repo -DskipTests=true -DskipITs=true"
+                sh "mvn clean install -Ppublish-release -Dmaven.repo.local=.repo -DskipTests=true -DskipITs=true"
             }
         }
         stage('Unit Testing') {
             steps {
-                sh "mvn verify -Dmaven.repo.local=.repo"
+                sh "mvn verify -Ppublish-release -Dmaven.repo.local=.repo"
             }
         }
         stage('Record Test Results') {
@@ -55,7 +55,7 @@ pipeline {
                             sh "mvn deploy -Dmaven.repo.local=.repo -DskipTests=true -DskipITs=true -Ppublish-release -Dgpg.passphrase=${GPG_PASSPHRASE} -Dgpg.keyname=73BD7C5F -DskipJavadoc=false -DskipJavasource=false"
                         }
                     } else {
-                        sh "mvn deploy -Dmaven.repo.local=.repo -DskipTests=true -DskipITs=true"
+                        sh "mvn deploy -Ppublish-release -Dmaven.repo.local=.repo -DskipTests=true -DskipITs=true"
                     }
                 }
             }
